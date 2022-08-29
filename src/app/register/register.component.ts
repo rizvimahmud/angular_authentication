@@ -35,7 +35,10 @@ export class RegisterComponent implements OnInit {
   registerUser() {
     this.loading = true;
     const payload = {
-      name: this.registerForm.controls['name'].value!,
+      name: this.registerForm.controls['name']
+        .value!.split(' ')
+        .map((char) => char[0].toUpperCase() + char.slice(1))
+        .join(' '),
       email: this.registerForm.controls['email'].value!,
       password: this.registerForm.controls['password'].value!,
     };

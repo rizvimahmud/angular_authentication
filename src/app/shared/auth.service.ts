@@ -92,6 +92,13 @@ export class AuthService {
     );
   }
 
+  refreshToken() {
+    const refreshTokenurl = `${this.authUrl}/refresh`;
+    return this.http
+      .get(this.authUrl, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   getToken(name: string) {
     return localStorage.getItem(Cookies.Access);
   }
@@ -116,6 +123,15 @@ export class AuthService {
   isLoggedIn() {
     const token = this.getToken(Cookies.Access);
     return token ? true : false;
+  }
+
+  getUserRoles() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      let roles = JSON.parse(user).roles;
+      return roles;
+    }
+    return [];
   }
 
   private handleError(response: HttpErrorResponse) {
