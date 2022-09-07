@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../shared/auth.service';
-import { CustomValidators } from '../shared/custom-validator';
+import {Component, OnInit} from '@angular/core'
+import {FormControl, FormGroup, Validators} from '@angular/forms'
+import {Router} from '@angular/router'
+import {AuthService} from '../shared/auth.service'
+import {CustomValidators} from '../shared/custom-validator'
 
 @Component({
   selector: 'app-register',
@@ -10,8 +10,8 @@ import { CustomValidators } from '../shared/custom-validator';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  loading: boolean = false;
-  errorResponse: string | null = null;
+  loading: boolean = false
+  errorResponse: string | null = null
   registerForm = new FormGroup(
     {
       name: new FormControl('', [
@@ -24,16 +24,17 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(8),
       ]),
       confirmPassword: new FormControl(''),
+      role: new FormControl(''),
     },
     [CustomValidators.MatchValidator('password', 'confirmPassword')]
-  );
+  )
 
   constructor(public authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {}
 
   registerUser() {
-    this.loading = true;
+    this.loading = true
     const payload = {
       name: this.registerForm.controls['name']
         .value!.split(' ')
@@ -41,18 +42,19 @@ export class RegisterComponent implements OnInit {
         .join(' '),
       email: this.registerForm.controls['email'].value!,
       password: this.registerForm.controls['password'].value!,
-    };
+      role: this.registerForm.controls['role'].value!,
+    }
 
     this.authService.signUp(payload).subscribe({
-      next: (res) => {
-        this.registerForm.reset();
-        this.router.navigate(['/user-profile']);
-        this.loading = false;
+      next: (_) => {
+        this.loading = false
+        this.registerForm.reset()
+        this.router.navigate(['/login'])
       },
       error: (err) => {
-        this.errorResponse = err.message;
-        this.loading = false;
+        this.errorResponse = err.message
+        this.loading = false
       },
-    });
+    })
   }
 }

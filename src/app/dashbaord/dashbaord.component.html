@@ -7,20 +7,60 @@
           <th>ID</th>
           <th>Name</th>
           <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td>
+        <tr *ngFor="let user of users; let i = index">
+          <td>{{ i + 1 }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>
-            <button>Edit</button>
-            <button>Delete</button>
+          <td>{{ user.role | titlecase }}</td>
+          <td [ngClass]="user.isActive ? 'text-green' : 'text-red'">
+            {{ user.isActive ? 'Approved' : 'Pending' }}
+          </td>
+          <td class="flex">
+            <button *ngIf="!user.isActive" (click)="activateUser(user.id)">
+              Approve
+            </button>
+            <button *ngIf="user.isActive" (click)="deactivateUser(user.id)">
+              Disapprove
+            </button>
+            <button [disabled]="isLoading" (click)="deleteUser(user.id)">
+              <span>Delete</span>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<!-- <modal>
+  <ng-container *ngIf="modalService.modalView === 'UPDATE_USER_VIEW'">
+    <div class="h-44 w-44">
+      <h1>Update user view</h1>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="modalService.modalView === 'DELETE_USER_VIEW'">
+    <div class="h-36 w-96">
+      <div class="py-6">
+        <h4 class="text-gray-600 text-center">Are you sure?</h4>
+        <div class="flex justify-center items-center gap-3 mt-8">
+          <button
+            class="inline-flex px-8 py-2 rounded-md bg-red-400 text-gray-50"
+          >
+            Delete
+          </button>
+          <button
+            class="inline-flex px-8 py-2 rounded-lg bg-blue-300 text-gray-50"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</modal> -->

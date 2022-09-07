@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core'
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
   RouterStateSnapshot,
   UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { Roles } from '../types/roles';
-import { AuthService } from './auth.service';
+} from '@angular/router'
+import {Observable} from 'rxjs'
+import {Roles} from '../types/roles'
+import {AuthService} from './auth.service'
 
 @Injectable({
   providedIn: 'root',
@@ -24,14 +24,14 @@ export class RoleGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const isLoggedIn = this.authService.isLoggedIn();
+    const isLoggedIn = this.authService.isLoggedIn()
     if (isLoggedIn) {
-      const userRoles = this.authService.getUserRoles();
-      if (userRoles.includes(Roles.Admin)) {
-        return true;
+      const userRole = this.authService.getUserRole()
+      if (userRole === Roles.Admin) {
+        return true
       }
     }
-
-    return false;
+    this.router.navigateByUrl('/login')
+    return false
   }
 }

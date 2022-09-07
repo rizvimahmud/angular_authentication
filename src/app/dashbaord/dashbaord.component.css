@@ -4,7 +4,7 @@ table {
 
 th,
 td {
-  @apply p-2 border border-gray-300 text-sm text-gray-600;
+  @apply px-4 py-2 border border-gray-300 text-sm text-gray-600;
 }
 
 tr > th {
@@ -15,7 +15,11 @@ table button {
   outline: none;
   border: none;
 
-  @apply px-4 py-2 rounded-md text-gray-100 hover:bg-opacity-80 transition-colors duration-150;
+  @apply flex-1 px-4 py-2 rounded-md text-gray-100 hover:bg-opacity-80 transition-colors duration-150;
+}
+
+table button:disabled {
+  @apply opacity-75 cursor-not-allowed
 }
 
 table button:first-child {
@@ -24,4 +28,11 @@ table button:first-child {
 
 table button:last-child {
   @apply bg-red-400;
+}
+
+.text-red {
+  @apply text-red-400;
+}
+.text-green {
+  @apply text-teal-400;
 }
