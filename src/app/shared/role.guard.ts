@@ -27,7 +27,7 @@ export class RoleGuard implements CanActivate {
     const isLoggedIn = this.authService.isLoggedIn()
     if (isLoggedIn) {
       const userRole = this.authService.getUserRole()
-      if (userRole === Roles.Admin) {
+      if (userRole === Roles.Admin || userRole === Roles.Super) {
         return true
       }
     }

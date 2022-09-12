@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core'
+import {AuthService} from '../shared/auth.service'
 import {UserService} from '../shared/user.service'
+import {Roles} from '../types/roles'
 import {User} from '../types/user'
 
 @Component({
@@ -9,14 +11,37 @@ import {User} from '../types/user'
 })
 export class DashbaordComponent implements OnInit {
   users: User[] | null = null
+  user: User | null = null
   isLoading: Boolean = false
-  constructor(public userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.getCurrentUser()
     this.getUsers()
   }
 
+  getCurrentUser() {
+    this.authService.currentUser$.subscribe((user) => (this.user = user))
+  }
+
   getUsers() {
+    if (this.user) {
+      this.user.role === Roles.Admin
+        ? this.getAllUsers()
+        : this.getUsersWithoutAdmin()
+    }
+  }
+
+  getUsersWithoutAdmin() {
+    this.userService.getUserWithoutAdmin().subscribe((res: any) => {
+      this.users = res.users
+    })
+  }
+
+  getAllUsers() {
     this.userService.getAllUsers().subscribe((res: any) => {
       this.users = res.users
     })
