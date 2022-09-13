@@ -1,4 +1,0 @@
-export enum ModalView {
-  UPDATE_USER_VIEW = 'UPDATE_USER_VIEW',
-  DELETE_USER_VIEW = 'DELETE_USER_VIEW',
-}

@@ -9,8 +9,7 @@ import {LoginComponent} from './login/login.component'
 import {RegisterComponent} from './register/register.component'
 import {UserProfileComponent} from './user-profile/user-profile.component'
 import {AuthInterceptor} from './shared/authconfig.interceptor'
-import {DashbaordComponent} from './dashbaord/dashbaord.component';
-import { ModalComponent } from './modal/modal.component'
+import {DashbaordComponent} from './dashbaord/dashbaord.component'
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { ModalComponent } from './modal/modal.component'
     RegisterComponent,
     UserProfileComponent,
     DashbaordComponent,
-    ModalComponent,
   ],
   imports: [
     BrowserModule,

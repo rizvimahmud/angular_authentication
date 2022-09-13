@@ -47,8 +47,6 @@ export class DashbaordComponent implements OnInit {
     })
   }
 
-  updateUser() {}
-
   deleteUser(userId: string) {
     this.isLoading = true
     this.userService.deleteUser(userId).subscribe({

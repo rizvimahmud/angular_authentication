@@ -38,6 +38,7 @@ export class AppComponent implements OnInit, DoCheck {
 
   havePermission() {
     const currentRole = this.authService.getUserRole()
+    console.log(currentRole)
     if (currentRole === Roles.Admin || currentRole === Roles.Super) {
       this.displayDashboardRoute = true
     }
