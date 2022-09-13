@@ -24,17 +24,17 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const currentUrl = state.url
-    const isLoggedIn = this.authService.isLoggedIn()
+    const isLoggedIn = this.authService.isLoggedIn
     const AUTH_URLS = ['/login', '/register']
 
     if (AUTH_URLS.includes(currentUrl) && isLoggedIn) {
+      this.router.navigateByUrl('/user-profile')
       return false
     }
     if (!AUTH_URLS.includes(currentUrl) && !isLoggedIn) {
       this.router.navigateByUrl('/login')
       return false
     }
-
     return true
   }
 }

@@ -33,9 +33,7 @@ export class AuthService {
   }
 
   constructor(private http: HttpClient, public router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(this.getToken('user')!)
-    )
+    this.currentUserSubject = new BehaviorSubject<User>(this.getToken('user'))
     this.currentUser$ = this.currentUserSubject.asObservable()
   }
 
@@ -52,10 +50,7 @@ export class AuthService {
     let loginUrl = `${this.authUrl}/login`
     return this.http.post(loginUrl, user, this.httpOptions).pipe(
       tap((res: any) => {
-        this.getCurrentuser().subscribe((res: any) => {
-          this.setUser(res.user)
-          return user
-        })
+        this.setUser(res.user)
       }),
       catchError(this.handleError)
     )
@@ -90,7 +85,11 @@ export class AuthService {
   }
 
   getToken(key: string) {
-    return localStorage.getItem(key)
+    const token = localStorage.getItem(key)
+    if (token) {
+      return JSON.parse(token)
+    }
+    return null
   }
 
   setTokens(access: string, refresh?: string) {
@@ -109,15 +108,15 @@ export class AuthService {
     this.currentUserSubject.next(user)
   }
 
-  isLoggedIn() {
-    const token = this.getToken('user')
-    return token ? true : false
+  get isLoggedIn(): Boolean {
+    const user = this.getToken('user')
+    return user ? true : false
   }
 
   getUserRole() {
-    const user = localStorage.getItem('user')
+    const user = this.getToken('user')
     if (user) {
-      let role = JSON.parse(user).role
+      let role = user.role
       return role
     }
     return ''

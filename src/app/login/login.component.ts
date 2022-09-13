@@ -30,8 +30,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(payload).subscribe({
       next: (_) => {
         this.loading = false
-        this.router.navigate(['/user-profile'])
         this.loginForm.reset()
+        this.router.navigate(['/user-profile'])
       },
       error: (err) => {
         this.errorResponse = err.message

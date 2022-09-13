@@ -8,7 +8,7 @@ import {RoleGuard} from './shared/role.guard'
 import {UserProfileComponent} from './user-profile/user-profile.component'
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: '/login'},
+  {path: '', pathMatch: 'full', redirectTo: '/user-profile'},
   {
     path: 'dashboard',
     component: DashbaordComponent,

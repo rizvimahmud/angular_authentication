@@ -11,7 +11,7 @@ import {User} from '../types/user'
 })
 export class DashbaordComponent implements OnInit {
   users: User[] | null = null
-  user: User | null = null
+  currentUser: User | null = null
   isLoading: Boolean = false
   constructor(
     private userService: UserService,
@@ -24,12 +24,12 @@ export class DashbaordComponent implements OnInit {
   }
 
   getCurrentUser() {
-    this.authService.currentUser$.subscribe((user) => (this.user = user))
+    this.authService.currentUser$.subscribe((user) => (this.currentUser = user))
   }
 
   getUsers() {
-    if (this.user) {
-      this.user.role === Roles.Admin
+    if (this.currentUser) {
+      this.currentUser.role === Roles.Admin
         ? this.getAllUsers()
         : this.getUsersWithoutAdmin()
     }

@@ -9,7 +9,7 @@
           <th>Email</th>
           <th>Role</th>
           <th>Status</th>
-          <th>Action</th>
+          <th *ngIf="currentUser?.role === 'admin'">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
           <td [ngClass]="user.isActive ? 'text-green' : 'text-red'">
             {{ user.isActive ? 'Approved' : 'Pending' }}
           </td>
-          <td class="flex">
+          <td *ngIf="currentUser?.role === 'admin'" class="flex">
             <button *ngIf="!user.isActive" (click)="activateUser(user.id)">
               Approve
             </button>

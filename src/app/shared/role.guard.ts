@@ -24,14 +24,14 @@ export class RoleGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const isLoggedIn = this.authService.isLoggedIn()
+    const isLoggedIn = this.authService.isLoggedIn
     if (isLoggedIn) {
       const userRole = this.authService.getUserRole()
       if (userRole === Roles.Admin || userRole === Roles.Super) {
         return true
       }
     }
-    this.router.navigateByUrl('/login')
+    this.router.navigateByUrl('/')
     return false
   }
 }
