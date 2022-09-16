@@ -12,4 +12,5 @@ export interface User {
   email: string
   role: string
   isActive: Boolean
+  avatar?: string
 }

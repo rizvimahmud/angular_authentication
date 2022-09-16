@@ -9,7 +9,8 @@ import {LoginComponent} from './login/login.component'
 import {RegisterComponent} from './register/register.component'
 import {UserProfileComponent} from './user-profile/user-profile.component'
 import {AuthInterceptor} from './shared/authconfig.interceptor'
-import {DashbaordComponent} from './dashbaord/dashbaord.component'
+import {DashbaordComponent} from './dashbaord/dashbaord.component';
+import { ClickOutsideDirective } from './shared/click-outside.directive'
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {DashbaordComponent} from './dashbaord/dashbaord.component'
     RegisterComponent,
     UserProfileComponent,
     DashbaordComponent,
+    ClickOutsideDirective,
   ],
   imports: [
     BrowserModule,

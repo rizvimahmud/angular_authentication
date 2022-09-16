@@ -13,13 +13,14 @@ export class AppComponent implements OnInit, DoCheck {
   displayNav = true
   displayDashboardRoute = false
   user: User | null = null
+  isDropdownOpen = false
 
   constructor(public authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => (this.user = user))
-    this.authService.getUserRole()
     this.havePermission()
+    this.closeDropdown()
   }
 
   ngDoCheck(): void {
@@ -34,13 +35,24 @@ export class AppComponent implements OnInit, DoCheck {
 
   logOutUser() {
     this.authService.logout()
+    this.closeDropdown()
   }
 
   havePermission() {
     const currentRole = this.authService.getUserRole()
-    console.log(currentRole)
     if (currentRole === Roles.Admin || currentRole === Roles.Super) {
       this.displayDashboardRoute = true
     }
+  }
+
+  openDropDown() {
+    this.isDropdownOpen = true
+  }
+  closeDropdown() {
+    this.isDropdownOpen = false
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen ? this.closeDropdown() : this.openDropDown()
   }
 }

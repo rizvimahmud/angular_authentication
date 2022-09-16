@@ -41,9 +41,7 @@ export class AuthService {
     user: Pick<UserDocument, 'email' | 'name' | 'password'>
   ): Observable<any> {
     let signupUrl = `${this.authUrl}/signup`
-    return this.http
-      .post(signupUrl, user, this.httpOptions)
-      .pipe(catchError(this.handleError))
+    return this.http.post(signupUrl, user).pipe(catchError(this.handleError))
   }
 
   login(user: Pick<UserDocument, 'email' | 'password'>) {
@@ -82,6 +80,13 @@ export class AuthService {
     return this.http
       .get(refreshTokenurl, this.httpOptions)
       .pipe(catchError(this.handleError))
+  }
+
+  uploadProfilePicture(file: any) {
+    const uploadAvatarUrl = `${this.authUrl}/upload`
+    return this.http.post(uploadAvatarUrl, file, {
+      headers: {},
+    })
   }
 
   getToken(key: string) {

@@ -72,6 +72,26 @@
           </div>
         </div>
         <div class="flex flex-col gap-3">
+          <label for="avatar" class="text-sm text-gray-500"
+            >Profile Image
+          </label>
+          <input
+            type="file"
+            id="avatar"
+            class="px-4 py-2 rounded-md border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-300 text-gray-600 text-sm"
+            (change)="onImageFileChange($event)"
+          />
+          <div *ngIf="previewImage">
+            <div class="w-[300px] h-[300px] rounded-full overflow-hidden">
+              <img
+                [src]="previewImage"
+                [alt]="registerForm.controls['name'].value"
+                class="w-full h-full object-cover object-center"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3">
           <label for="password" class="text-sm text-gray-500"
             >Password <sup>*</sup></label
           >

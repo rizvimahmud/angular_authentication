@@ -12,6 +12,7 @@ import {CustomValidators} from '../shared/custom-validator'
 export class RegisterComponent implements OnInit {
   loading: boolean = false
   errorResponse: string | null = null
+  previewImage!: string
   registerForm = new FormGroup(
     {
       name: new FormControl('', [
@@ -19,6 +20,7 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(/^[a-zA-Z ]+$/i),
       ]),
       email: new FormControl('', [Validators.required, Validators.email]),
+      avatar: new FormControl(null),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
@@ -33,19 +35,38 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  onImageFileChange(event: any) {
+    //@ts-ignore
+    const file = (event.target as HTMLInputElement).files[0]
+    this.registerForm.patchValue({
+      //@ts-ignore
+      avatar: file,
+    })
+    this.registerForm.get('avatar')?.updateValueAndValidity()
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.previewImage = reader.result as string
+    }
+    reader.readAsDataURL(file)
+  }
+
   registerUser() {
     this.loading = true
-    const payload = {
-      name: this.registerForm.controls['name']
+    const formData = new FormData()
+    formData.append(
+      'name',
+      this.registerForm.controls['name']
         .value!.split(' ')
         .map((char) => char[0].toUpperCase() + char.slice(1))
-        .join(' '),
-      email: this.registerForm.controls['email'].value!,
-      password: this.registerForm.controls['password'].value!,
-      role: this.registerForm.controls['role'].value!,
-    }
+        .join(' ')
+    )
+    formData.append('email', this.registerForm.controls['email'].value!)
+    formData.append('password', this.registerForm.controls['password'].value!)
+    formData.append('role', this.registerForm.controls['role'].value!)
+    formData.append('avatar', this.registerForm.controls['avatar'].value!)
 
-    this.authService.signUp(payload).subscribe({
+    this.authService.signUp(formData as any).subscribe({
       next: (_) => {
         this.loading = false
         this.registerForm.reset()

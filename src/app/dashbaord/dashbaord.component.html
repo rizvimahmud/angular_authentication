@@ -6,6 +6,7 @@
         <tr>
           <th>No.</th>
           <th>Name</th>
+          <th>Avatar</th>
           <th>Email</th>
           <th>Role</th>
           <th>Status</th>
@@ -16,6 +17,13 @@
         <tr *ngFor="let user of users; let i = index">
           <td>{{ i + 1 }}</td>
           <td>{{ user.name }}</td>
+          <td>
+            <img
+              [src]="user.avatar || '/assets/placeholder.png'"
+              alt="User avatar"
+              class="w-8 h-8 rounded-full object-cover object-center"
+            />
+          </td>
           <td>{{ user.email }}</td>
           <td>{{ user.role | titlecase }}</td>
           <td [ngClass]="user.isActive ? 'text-green' : 'text-red'">

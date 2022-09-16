@@ -34,8 +34,8 @@ export class UserService {
     return this.http.put(deactivateUserUrl, {id: userId}, this.httpOptions)
   }
 
-  getUserWithoutAdmin() {
-    const usersWithoutAdminUrl = `${this.userUrl}/super`
-    return this.http.get(usersWithoutAdminUrl, this.httpOptions)
+  getRegularUsers() {
+    const getRegularUsers = `${this.userUrl}/super`
+    return this.http.get(getRegularUsers, this.httpOptions)
   }
 }

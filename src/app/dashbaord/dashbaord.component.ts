@@ -31,12 +31,12 @@ export class DashbaordComponent implements OnInit {
     if (this.currentUser) {
       this.currentUser.role === Roles.Admin
         ? this.getAllUsers()
-        : this.getUsersWithoutAdmin()
+        : this.getRegularUsers()
     }
   }
 
-  getUsersWithoutAdmin() {
-    this.userService.getUserWithoutAdmin().subscribe((res: any) => {
+  getRegularUsers() {
+    this.userService.getRegularUsers().subscribe((res: any) => {
       this.users = res.users
     })
   }
