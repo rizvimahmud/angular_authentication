@@ -1,47 +1,84 @@
 <div class="pt-12 grid place-items-center">
-  <h2 class="my-6 text-lg text-gray-600">Users</h2>
-  <div *ngIf="users">
-    <table>
-      <thead>
+  <div class="table-container">
+    <p-table
+      [value]="users"
+      [lazy]="true"
+      (onLazyLoad)="loadUserData($event)"
+      [loading]="isLoading"
+      [totalRecords]="totalRecords"
+      [resizableColumns]="true"
+      responsiveLayout="scroll"
+      [paginator]="true"
+      [rows]="5"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between">
+          <span>List of Users</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
         <tr>
-          <th>No.</th>
-          <th>Name</th>
-          <th>Avatar</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th *ngIf="currentUser?.role === 'admin'">Action</th>
+          <th *ngFor="let col of columns; let i = index">
+            {{ col.header }}
+          </th>
+          <th *ngIf="currentUser?.role === 'admin'"></th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ user.name }}</td>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            {{ user.name }}
+          </td>
           <td>
             <img
               [src]="user.avatar || '/assets/placeholder.png'"
-              alt="User avatar"
-              class="w-8 h-8 rounded-full object-cover object-center"
+              alt="user.name"
+              class="w-16 h-16 rounded-full object-cover object-center"
             />
           </td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role | titlecase }}</td>
-          <td [ngClass]="user.isActive ? 'text-green' : 'text-red'">
-            {{ user.isActive ? 'Approved' : 'Pending' }}
+          <td>
+            {{ user.email }}
           </td>
-          <td *ngIf="currentUser?.role === 'admin'" class="flex">
-            <button *ngIf="!user.isActive" (click)="activateUser(user.id)">
-              Approve
-            </button>
-            <button *ngIf="user.isActive" (click)="deactivateUser(user.id)">
-              Disapprove
-            </button>
-            <button [disabled]="isLoading" (click)="deleteUser(user.id)">
-              <span>Delete</span>
-            </button>
+          <td>
+            {{ user.role }}
+          </td>
+          <td>
+            <span
+              [ngClass]="user.isActive ? 'badge approved' : 'badge pending'"
+            >
+              {{ user.isActive ? 'Approved' : 'Pending' }}
+            </span>
+          </td>
+          <td *ngIf="currentUser?.role === 'admin'">
+            <button
+              *ngIf="!user.isActive"
+              pButton
+              label="Approve"
+              icon="pi pi-check-circle"
+              (click)="activateUser(user.id)"
+              class="button status"
+            ></button>
+            <button
+              *ngIf="user.isActive"
+              pButton
+              label="Disapprove"
+              icon="pi pi-times-circle"
+              (click)="deactivateUser(user.id)"
+              class="button status"
+            ></button>
+            <button
+              pButton
+              label="Delete"
+              icon="pi pi-trash"
+              (click)="deleteUser(user.id)"
+              class="button p-button-danger"
+            ></button>
           </td>
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div>Total number of users {{ totalRecords }}</div>
+      </ng-template>
+    </p-table>
   </div>
 </div>

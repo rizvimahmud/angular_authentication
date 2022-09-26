@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {environment} from 'src/environments/environment'
 
@@ -7,35 +7,59 @@ import {environment} from 'src/environments/environment'
 })
 export class UserService {
   userUrl: string = `${environment.baseUrl}/users`
-  httpOptions = {
-    headers: new HttpHeaders({
+  defaultOffset = 0
+  defaultLimit = 0
+
+  getHttpHeaders(headers?: HttpHeaders) {
+    return new HttpHeaders({
       'Content-Type': 'application/json',
-    }),
+      ...headers,
+    })
   }
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers() {
-    return this.http.get(this.userUrl, this.httpOptions)
+  getAllUsers(
+    offset: number = this.defaultOffset,
+    limit: number = this.defaultLimit
+  ) {
+    return this.http.get(this.userUrl, {
+      params: new HttpParams().set('offset', offset).set('limit', limit),
+      headers: this.getHttpHeaders(),
+    })
   }
 
   deleteUser(userId: string) {
     const deleteUserUrl = `${this.userUrl}/${userId}`
-    return this.http.delete(deleteUserUrl, this.httpOptions)
+    return this.http.delete(deleteUserUrl, {headers: this.getHttpHeaders()})
   }
 
   activateUser(userId: string) {
     const activateUserUrl = `${this.userUrl}/activate`
-    return this.http.put(activateUserUrl, {id: userId}, this.httpOptions)
+    return this.http.put(
+      activateUserUrl,
+      {id: userId},
+      {headers: this.getHttpHeaders()}
+    )
   }
 
   deactivateUser(userId: string) {
     const deactivateUserUrl = `${this.userUrl}/deactivate`
-    return this.http.put(deactivateUserUrl, {id: userId}, this.httpOptions)
+    return this.http.put(
+      deactivateUserUrl,
+      {id: userId},
+      {headers: this.getHttpHeaders()}
+    )
   }
 
-  getRegularUsers() {
+  getRegularUsers(
+    offset: number = this.defaultOffset,
+    limit: number = this.defaultLimit
+  ) {
     const getRegularUsers = `${this.userUrl}/super`
-    return this.http.get(getRegularUsers, this.httpOptions)
+    return this.http.get(getRegularUsers, {
+      params: new HttpParams().set('offset', offset).set('limit', limit),
+      headers: this.getHttpHeaders(),
+    })
   }
 }

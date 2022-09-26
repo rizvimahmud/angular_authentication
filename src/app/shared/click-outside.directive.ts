@@ -8,7 +8,7 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core'
-import {filter, fromEvent, Subject, Subscription} from 'rxjs'
+import {filter, fromEvent, Subscription} from 'rxjs'
 
 @Directive({
   selector: '[clickOutside]',

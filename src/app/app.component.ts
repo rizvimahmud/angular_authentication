@@ -24,9 +24,9 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    const authUrs = ['/register', '/login']
+    const authUrls = ['/register', '/login']
     const currentUrl = this.router.url
-    if (authUrs.includes(currentUrl)) {
+    if (authUrls.includes(currentUrl)) {
       this.displayNav = false
     } else {
       this.displayNav = true
@@ -48,6 +48,7 @@ export class AppComponent implements OnInit, DoCheck {
   openDropDown() {
     this.isDropdownOpen = true
   }
+
   closeDropdown() {
     this.isDropdownOpen = false
   }

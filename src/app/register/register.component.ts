@@ -36,19 +36,19 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   onImageFileChange(event: any) {
-    //@ts-ignore
-    const file = (event.target as HTMLInputElement).files[0]
+    // @ts-ignore
+    const file = event.files[0]
     this.registerForm.patchValue({
-      //@ts-ignore
+      // @ts-ignore
       avatar: file,
     })
     this.registerForm.get('avatar')?.updateValueAndValidity()
 
-    const reader = new FileReader()
-    reader.onload = () => {
-      this.previewImage = reader.result as string
-    }
-    reader.readAsDataURL(file)
+    // const reader = new FileReader()
+    // reader.onload = () => {
+    //   this.previewImage = reader.result as string
+    // }
+    // reader.readAsDataURL(file)
   }
 
   registerUser() {
@@ -65,7 +65,6 @@ export class RegisterComponent implements OnInit {
     formData.append('password', this.registerForm.controls['password'].value!)
     formData.append('role', this.registerForm.controls['role'].value!)
     formData.append('avatar', this.registerForm.controls['avatar'].value!)
-
     this.authService.signUp(formData as any).subscribe({
       next: (_) => {
         this.loading = false
@@ -77,5 +76,9 @@ export class RegisterComponent implements OnInit {
         this.loading = false
       },
     })
+  }
+  cancelAvatarUpload() {
+    this.registerForm.controls['avatar'].reset()
+    this.previewImage = ''
   }
 }

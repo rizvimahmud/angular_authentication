@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50" *ngIf="displayNav">
+<header class="min-w-full sticky top-0 z-50" *ngIf="displayNav">
   <nav class="w-full bg-white border-b border-gray-100 shadow-sm">
     <div class="flex flex-row justify-between items-center px-8 md:px-12 py-5">
       <div></div>
@@ -88,7 +88,7 @@
   </nav>
 </header>
 <main class="min-h-screen bg-white">
-  <div class="px-8">
+  <div class="px-8 pb-12">
     <router-outlet></router-outlet>
   </div>
 </main>

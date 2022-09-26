@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core'
+import {LazyLoadEvent} from 'primeng/api'
 import {AuthService} from '../shared/auth.service'
 import {UserService} from '../shared/user.service'
 import {Roles} from '../types/roles'
@@ -10,40 +11,57 @@ import {User} from '../types/user'
   styleUrls: ['./dashbaord.component.css'],
 })
 export class DashbaordComponent implements OnInit {
-  users: User[] | null = null
+  isLoading: boolean = false
   currentUser: User | null = null
-  isLoading: Boolean = false
+  columns!: any[]
+  users!: User[]
+  totalRecords!: number
+  offset = 0
+  limit = 5
+
   constructor(
     private userService: UserService,
     private authService: AuthService
   ) {}
 
+  loadUserData(event: LazyLoadEvent) {
+    this.isLoading = true
+    let offset = event?.first || this.offset
+    let limit = event?.rows || this.limit
+    this.getUsers(offset, limit)
+  }
+
   ngOnInit(): void {
+    this.isLoading = true
     this.getCurrentUser()
-    this.getUsers()
   }
 
   getCurrentUser() {
     this.authService.currentUser$.subscribe((user) => (this.currentUser = user))
+    this.setTableColumns()
   }
 
-  getUsers() {
+  getUsers(offset?: number, limit?: number) {
     if (this.currentUser) {
       this.currentUser.role === Roles.Admin
-        ? this.getAllUsers()
-        : this.getRegularUsers()
+        ? this.getAllUsers(offset, limit)
+        : this.getRegularUsers(offset, limit)
     }
   }
 
-  getRegularUsers() {
-    this.userService.getRegularUsers().subscribe((res: any) => {
+  getRegularUsers(offset?: number, limit?: number) {
+    this.userService.getRegularUsers(offset, limit).subscribe((res: any) => {
       this.users = res.users
+      this.totalRecords = res.totalRecords
+      this.isLoading = false
     })
   }
 
-  getAllUsers() {
-    this.userService.getAllUsers().subscribe((res: any) => {
+  getAllUsers(offset?: number, limit?: number) {
+    this.userService.getAllUsers(offset, limit).subscribe((res: any) => {
       this.users = res.users
+      this.totalRecords = res.totalRecords
+      this.isLoading = false
     })
   }
 
@@ -71,5 +89,15 @@ export class DashbaordComponent implements OnInit {
         this.getUsers()
       },
     })
+  }
+
+  setTableColumns() {
+    this.columns = [
+      {field: 'name', header: 'Name'},
+      {field: 'avatar', header: 'Avatar'},
+      {field: 'email', header: 'Email'},
+      {field: 'role', header: 'Role'},
+      {field: 'isActive', header: 'Status'},
+    ]
   }
 }

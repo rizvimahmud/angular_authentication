@@ -9,8 +9,11 @@ import {LoginComponent} from './login/login.component'
 import {RegisterComponent} from './register/register.component'
 import {UserProfileComponent} from './user-profile/user-profile.component'
 import {AuthInterceptor} from './shared/authconfig.interceptor'
-import {DashbaordComponent} from './dashbaord/dashbaord.component';
-import { ClickOutsideDirective } from './shared/click-outside.directive'
+import {DashbaordComponent} from './dashbaord/dashbaord.component'
+import {ClickOutsideDirective} from './shared/click-outside.directive'
+import {FileUploadModule} from 'primeng/fileupload'
+import {InputTextModule} from 'primeng/inputtext'
+import {TableModule} from 'primeng/table'
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { ClickOutsideDirective } from './shared/click-outside.directive'
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FileUploadModule,
+    InputTextModule,
+    TableModule,
   ],
   providers: [
     {

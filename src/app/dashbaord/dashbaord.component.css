@@ -1,38 +1,23 @@
-table {
-  border-collapse: collapse;
+.table-container {
+  @apply p-12 rounded-xl bg-gray-50;
 }
 
-th,
-td {
-  @apply px-4 py-2 border border-gray-300 text-sm text-gray-600;
+.badge {
+  @apply block px-2 py-[2px] text-center font-semibold  rounded-sm;
 }
 
-tr > th {
-  @apply bg-gray-200 font-semibold;
+.badge.approved {
+  @apply bg-teal-200 text-teal-900;
 }
 
-table button {
-  outline: none;
-  border: none;
-
-  @apply flex-1 px-4 py-2 rounded-md text-gray-100 hover:bg-opacity-80 transition-colors duration-150;
+.badge.pending {
+  @apply bg-red-200 text-red-900;
 }
 
-table button:disabled {
-  @apply opacity-75 cursor-not-allowed
+.button {
+  @apply inline-flex justify-center items-center w-32;
 }
 
-table button:first-child {
-  @apply bg-blue-400 mr-3;
-}
-
-table button:last-child {
-  @apply bg-red-400;
-}
-
-.text-red {
-  @apply text-red-400;
-}
-.text-green {
-  @apply text-teal-400;
+.button.status {
+  @apply mr-2;
 }

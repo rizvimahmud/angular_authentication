@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core'
+import {FormControl, FormGroup} from '@angular/forms'
 import {AuthService} from '../shared/auth.service'
 import {User} from '../types/user'
 
@@ -9,9 +10,36 @@ import {User} from '../types/user'
 })
 export class UserProfileComponent implements OnInit {
   user: User | null = null
+  previewImage!: string
   constructor(public authService: AuthService) {}
+
+  uploadForm = new FormGroup({
+    avatar: new FormControl(null),
+  })
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => (this.user = user))
+  }
+
+  onSelectImage(event: any) {
+    //@ts-ignore
+    const file = event.files[0]
+    this.uploadForm.patchValue({
+      //@ts-ignore
+      avatar: file,
+    })
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.previewImage = reader.result as string
+    }
+    reader.readAsDataURL(file)
+  }
+
+  updateProfilePicture() {
+    console.log('uploading...')
+  }
+
+  clearImageField(event: any) {
+    console.log(event)
   }
 }
