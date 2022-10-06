@@ -15,7 +15,7 @@
 }
 
 .button {
-  @apply inline-flex justify-center items-center w-32;
+  @apply inline-flex justify-center items-center w-32 py-2;
 }
 
 .button.status {

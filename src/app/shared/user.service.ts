@@ -21,10 +21,14 @@ export class UserService {
 
   getAllUsers(
     offset: number = this.defaultOffset,
-    limit: number = this.defaultLimit
+    limit: number = this.defaultLimit,
+    name: string = ''
   ) {
     return this.http.get(this.userUrl, {
-      params: new HttpParams().set('offset', offset).set('limit', limit),
+      params: new HttpParams()
+        .set('offset', offset)
+        .set('limit', limit)
+        .set('name', name),
       headers: this.getHttpHeaders(),
     })
   }
@@ -34,31 +38,27 @@ export class UserService {
     return this.http.delete(deleteUserUrl, {headers: this.getHttpHeaders()})
   }
 
-  activateUser(userId: string) {
-    const activateUserUrl = `${this.userUrl}/activate`
-    return this.http.put(
-      activateUserUrl,
-      {id: userId},
-      {headers: this.getHttpHeaders()}
-    )
-  }
+  handleUserVerification(userId: string, status: 'activate' | 'deactivate') {
+    const verificationUrl = `${this.userUrl}/${userId}`
 
-  deactivateUser(userId: string) {
-    const deactivateUserUrl = `${this.userUrl}/deactivate`
     return this.http.put(
-      deactivateUserUrl,
-      {id: userId},
+      verificationUrl,
+      {status},
       {headers: this.getHttpHeaders()}
     )
   }
 
   getRegularUsers(
     offset: number = this.defaultOffset,
-    limit: number = this.defaultLimit
+    limit: number = this.defaultLimit,
+    name = ''
   ) {
     const getRegularUsers = `${this.userUrl}/super`
     return this.http.get(getRegularUsers, {
-      params: new HttpParams().set('offset', offset).set('limit', limit),
+      params: new HttpParams()
+        .set('offset', offset)
+        .set('limit', limit)
+        .set('name', name),
       headers: this.getHttpHeaders(),
     })
   }

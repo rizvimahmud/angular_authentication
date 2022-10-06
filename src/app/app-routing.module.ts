@@ -1,10 +1,8 @@
 import {NgModule} from '@angular/core'
 import {RouterModule, Routes} from '@angular/router'
+import {AuthGuard} from './auth/guards/auth.guard'
+import {RoleGuard} from './auth/guards/role.guard'
 import {DashbaordComponent} from './dashbaord/dashbaord.component'
-import {LoginComponent} from './login/login.component'
-import {RegisterComponent} from './register/register.component'
-import {AuthGuard} from './shared/auth.guard'
-import {RoleGuard} from './shared/role.guard'
 import {UserProfileComponent} from './user-profile/user-profile.component'
 
 const routes: Routes = [
@@ -14,8 +12,6 @@ const routes: Routes = [
     component: DashbaordComponent,
     canActivate: [RoleGuard],
   },
-  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
-  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
   {
     path: 'user-profile',
     component: UserProfileComponent,

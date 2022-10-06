@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core'
 import {FormControl, FormGroup} from '@angular/forms'
-import {AuthService} from '../shared/auth.service'
-import {User} from '../types/user'
+import {AuthService} from '../auth/services/auth.service'
+import {User} from '../auth/types/user.interface'
 
 @Component({
   selector: 'app-user-profile',
@@ -18,7 +18,9 @@ export class UserProfileComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => (this.user = user))
+    this.authService.currentUser$.subscribe((user) => {
+      this.user = user
+    })
   }
 
   onSelectImage(event: any) {

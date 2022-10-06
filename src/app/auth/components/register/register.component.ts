@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core'
 import {FormControl, FormGroup, Validators} from '@angular/forms'
 import {Router} from '@angular/router'
-import {AuthService} from '../shared/auth.service'
-import {CustomValidators} from '../shared/custom-validator'
+import {AuthService} from '../../services/auth.service'
+import {capitalizeUserName} from '../../utils/capitalizeUserName'
+import {CustomValidators} from '../../utils/customValidator'
 
 @Component({
-  selector: 'app-register',
+  selector: 'auth-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
@@ -56,10 +57,7 @@ export class RegisterComponent implements OnInit {
     const formData = new FormData()
     formData.append(
       'name',
-      this.registerForm.controls['name']
-        .value!.split(' ')
-        .map((char) => char[0].toUpperCase() + char.slice(1))
-        .join(' ')
+      capitalizeUserName(this.registerForm.controls['name'].value!)
     )
     formData.append('email', this.registerForm.controls['email'].value!)
     formData.append('password', this.registerForm.controls['password'].value!)

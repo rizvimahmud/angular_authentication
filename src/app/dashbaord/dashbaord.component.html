@@ -6,14 +6,14 @@
       (onLazyLoad)="loadUserData($event)"
       [loading]="isLoading"
       [totalRecords]="totalRecords"
-      [resizableColumns]="true"
-      responsiveLayout="scroll"
+      responsiveLayout="true"
       [paginator]="true"
       [rows]="5"
     >
       <ng-template pTemplate="caption">
         <div class="flex items-center justify-between">
-          <span>List of Users</span>
+          <span class="text-2xl">List of Users</span>
+          <filter (selectUserEvent)="selectUser($event)"></filter>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -30,11 +30,13 @@
             {{ user.name }}
           </td>
           <td>
-            <img
-              [src]="user.avatar || '/assets/placeholder.png'"
-              alt="user.name"
-              class="w-16 h-16 rounded-full object-cover object-center"
-            />
+            <div class="relative w-16 h-16 rounded-full overflow-hidden">
+              <img
+                [src]="user.avatar?.imageUrl || '/assets/placeholder.png'"
+                alt="user.name"
+                class="absolute block top-0 left-0"
+              />
+            </div>
           </td>
           <td>
             {{ user.email }}

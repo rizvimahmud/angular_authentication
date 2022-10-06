@@ -1,0 +1,11 @@
+<p-dropdown
+  [options]="users"
+  [(ngModel)]="selectedUser"
+  optionLabel="name"
+  optionValue="name"
+  (onChange)="onSelectUser($event)"
+  placeholder="Select a user"
+  [showClear]="true"
+>
+  <ng-template pTemplate="filter" let-options="users"> </ng-template>
+</p-dropdown>

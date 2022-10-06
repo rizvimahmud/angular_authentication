@@ -11,16 +11,12 @@ import {
 } from 'rxjs'
 import {environment} from 'src/environments/environment'
 import {Cookies} from '../types/cookies'
-import {User, UserDocument} from '../types/user'
+import {ErrorResponse} from '../types/errorResponse.interface'
+import {User} from '../types/user.interface'
+import {UserLoginRequest} from '../types/userLoginRequest.interface'
+import {UserSignupRequest} from '../types/userSignupRequest.interface'
 
-interface ErrorResponse {
-  status?: number
-  message: string
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AuthService {
   authUrl = `${environment.baseUrl}/user`
   private currentUserSubject: BehaviorSubject<User>
@@ -37,14 +33,12 @@ export class AuthService {
     this.currentUser$ = this.currentUserSubject.asObservable()
   }
 
-  signUp(
-    user: Pick<UserDocument, 'email' | 'name' | 'password'>
-  ): Observable<any> {
+  signUp(user: UserSignupRequest): Observable<any> {
     let signupUrl = `${this.authUrl}/signup`
     return this.http.post(signupUrl, user).pipe(catchError(this.handleError))
   }
 
-  login(user: Pick<UserDocument, 'email' | 'password'>) {
+  login(user: UserLoginRequest) {
     let loginUrl = `${this.authUrl}/login`
     return this.http.post(loginUrl, user, this.httpOptions).pipe(
       tap((res: any) => {

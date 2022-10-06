@@ -1,0 +1,99 @@
+<header *ngIf="displayNav" class="w-full sticky top-0 z-50">
+  <nav class="w-full bg-white border-b border-gray-100 shadow-sm">
+    <div class="flex flex-row justify-between items-center px-8 md:px-12 py-3">
+      <div>
+        <a
+          routerLink="/"
+          class="relative inline-block w-12 h-12 overflow-hidden"
+        >
+          <img
+            src="/assets/angular-logo.png"
+            alt="Angular Logo"
+            class="absolute top-0 left-0"
+          />
+        </a>
+      </div>
+      <ul class="flex flex-row items-center gap-6">
+        <li *ngIf="!user">
+          <a
+            routerLink="/register"
+            class="text-base text-gray-600 hover:text-gray-700 transition-colors duration-150"
+            >Signup</a
+          >
+        </li>
+        <li *ngIf="!user">
+          <a
+            routerLink="/login"
+            class="text-base text-gray-600 hover:text-gray-700 transition-colors duration-200"
+            >Login</a
+          >
+        </li>
+
+        <li *ngIf="displayDashboardRoute">
+          <a
+            routerLink="/dashboard"
+            class="text-base text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >Dashboard</a
+          >
+        </li>
+
+        <li
+          *ngIf="user"
+          class="text-sm text-gray-500 before:content-['|'] before:mr-4 before:text-gray-200 before:font-light"
+        >
+          {{ user.name }}
+        </li>
+
+        <li *ngIf="user" class="relative" (clickOutside)="closeDropdown()">
+          <div>
+            <button
+              type="button"
+              class="relative w-12 h-12 overflow-hidden rounded-full border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+              (click)="toggleDropdown()"
+            >
+              <img
+                [src]="user.avatar?.imageUrl || '/assets/placeholder.png'"
+                alt="User avatar"
+                class="absolute block top-0 left-0"
+              />
+            </button>
+          </div>
+
+          <div
+            *ngIf="isDropdownOpen"
+            class="absolute right-0 top-10 z-20 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="menu-button"
+            tabindex="-1"
+          >
+            <div class="py-1" role="none">
+              <a
+                routerLink="/user-profile"
+                class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
+                role="menuitem"
+                tabindex="0"
+                id="menu-item-1"
+                >Profile</a
+              >
+
+              <button
+                *ngIf="user"
+                class="text-gray-700 block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
+                role="menuitem"
+                tabindex="0"
+                id="menu-item-3"
+                (click)="logOutUser()"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

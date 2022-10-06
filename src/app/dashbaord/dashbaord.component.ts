@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, ViewChild} from '@angular/core'
 import {LazyLoadEvent} from 'primeng/api'
-import {AuthService} from '../shared/auth.service'
+import {Table} from 'primeng/table'
+import {AuthService} from '../auth/services/auth.service'
+import {Roles} from '../auth/types/roles'
+import {User} from '../auth/types/user.interface'
 import {UserService} from '../shared/user.service'
-import {Roles} from '../types/roles'
-import {User} from '../types/user'
 
 @Component({
   selector: 'app-dashbaord',
@@ -16,49 +17,76 @@ export class DashbaordComponent implements OnInit {
   columns!: any[]
   users!: User[]
   totalRecords!: number
-  offset = 0
-  limit = 5
+  defaultOffset = 0
+  defaultLimit = 5
+  selectedUserName!: string
+
+  @ViewChild(Table)
+  table!: Table
 
   constructor(
     private userService: UserService,
     private authService: AuthService
   ) {}
 
-  loadUserData(event: LazyLoadEvent) {
-    this.isLoading = true
-    let offset = event?.first || this.offset
-    let limit = event?.rows || this.limit
-    this.getUsers(offset, limit)
+  setTableColumns() {
+    this.columns = [
+      {field: 'name', header: 'Name'},
+      {field: 'avatar', header: 'Avatar'},
+      {field: 'email', header: 'Email'},
+      {field: 'role', header: 'Role'},
+      {field: 'isActive', header: 'Status'},
+    ]
   }
 
   ngOnInit(): void {
     this.isLoading = true
     this.getCurrentUser()
+    this.setTableColumns()
+  }
+
+  loadUserData(event: LazyLoadEvent) {
+    this.isLoading = true
+    let offset = event?.first || this.defaultOffset
+    let limit = event?.rows || this.defaultLimit
+    let urlEncodedUsername = encodeURIComponent(this.selectedUserName)
+    this.selectedUserName
+      ? this.getUsers(offset, limit, urlEncodedUsername)
+      : this.getUsers(offset, limit)
+  }
+
+  reloadUserData() {
+    this.loadUserData(this.table.createLazyLoadMetadata())
   }
 
   getCurrentUser() {
     this.authService.currentUser$.subscribe((user) => (this.currentUser = user))
-    this.setTableColumns()
   }
 
-  getUsers(offset?: number, limit?: number) {
+  getUsers(
+    offset = this.defaultOffset,
+    limit = this.defaultLimit,
+    name?: string
+  ) {
     if (this.currentUser) {
       this.currentUser.role === Roles.Admin
-        ? this.getAllUsers(offset, limit)
-        : this.getRegularUsers(offset, limit)
+        ? this.getAllUsers(offset, limit, name)
+        : this.getRegularUsers(offset, limit, name)
     }
   }
 
-  getRegularUsers(offset?: number, limit?: number) {
-    this.userService.getRegularUsers(offset, limit).subscribe((res: any) => {
-      this.users = res.users
-      this.totalRecords = res.totalRecords
-      this.isLoading = false
-    })
+  getRegularUsers(offset?: number, limit?: number, name?: string) {
+    this.userService
+      .getRegularUsers(offset, limit, name)
+      .subscribe((res: any) => {
+        this.users = res.users
+        this.totalRecords = res.totalRecords
+        this.isLoading = false
+      })
   }
 
-  getAllUsers(offset?: number, limit?: number) {
-    this.userService.getAllUsers(offset, limit).subscribe((res: any) => {
+  getAllUsers(offset?: number, limit?: number, name?: string) {
+    this.userService.getAllUsers(offset, limit, name).subscribe((res: any) => {
       this.users = res.users
       this.totalRecords = res.totalRecords
       this.isLoading = false
@@ -69,35 +97,30 @@ export class DashbaordComponent implements OnInit {
     this.isLoading = true
     this.userService.deleteUser(userId).subscribe({
       next: () => {
-        this.getUsers()
+        this.reloadUserData()
         this.isLoading = false
       },
     })
   }
 
   activateUser(userId: string) {
-    this.userService.activateUser(userId).subscribe({
+    this.userService.handleUserVerification(userId, 'activate').subscribe({
       next: () => {
-        this.getUsers()
+        this.reloadUserData()
       },
     })
   }
 
   deactivateUser(userId: string) {
-    this.userService.deactivateUser(userId).subscribe({
+    this.userService.handleUserVerification(userId, 'deactivate').subscribe({
       next: () => {
-        this.getUsers()
+        this.reloadUserData()
       },
     })
   }
 
-  setTableColumns() {
-    this.columns = [
-      {field: 'name', header: 'Name'},
-      {field: 'avatar', header: 'Avatar'},
-      {field: 'email', header: 'Email'},
-      {field: 'role', header: 'Role'},
-      {field: 'isActive', header: 'Status'},
-    ]
+  selectUser(name: string) {
+    this.selectedUserName = name
+    this.reloadUserData()
   }
 }
