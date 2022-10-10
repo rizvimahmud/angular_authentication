@@ -1,17 +1,13 @@
 <header *ngIf="displayNav" class="w-full sticky top-0 z-50">
   <nav class="w-full bg-white border-b border-gray-100 shadow-sm">
     <div class="flex flex-row justify-between items-center px-8 md:px-12 py-3">
-      <div>
-        <a
-          routerLink="/"
-          class="relative inline-block w-12 h-12 overflow-hidden"
+      <div class="relative inline-block w-12 h-12 overflow-hidden">
         >
-          <img
-            src="/assets/angular-logo.png"
-            alt="Angular Logo"
-            class="absolute top-0 left-0"
-          />
-        </a>
+        <img
+          src="/assets/angular-logo.png"
+          alt="Angular Logo"
+          class="absolute top-0 left-0"
+        />
       </div>
       <ul class="flex flex-row items-center gap-6">
         <li *ngIf="!user">
@@ -55,7 +51,7 @@
               (click)="toggleDropdown()"
             >
               <img
-                [src]="user.avatar?.imageUrl || '/assets/placeholder.png'"
+                [src]="user.avatar.imageUrl || '/assets/placeholder.png'"
                 alt="User avatar"
                 class="absolute block top-0 left-0"
               />

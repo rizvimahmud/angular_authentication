@@ -1,5 +1,5 @@
 <p-dropdown
-  [options]="users"
+  [options]="(userResponse$ | async)!.users"
   [(ngModel)]="selectedUser"
   optionLabel="name"
   optionValue="name"

@@ -1,16 +1,18 @@
-import {Component, OnInit} from '@angular/core'
-import {FormControl, FormGroup, Validators} from '@angular/forms'
-import {Router} from '@angular/router'
-import {AuthService} from '../../services/auth.service'
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import { Subscription } from 'rxjs'
+import { AuthService } from '../../services/auth.service'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnDestroy {
   loading: boolean = false
-  errorResponse: string | null = null
+  errorMessage: string | null = null
+  loginSubscription: Subscription | undefined
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -19,7 +21,9 @@ export class LoginComponent implements OnInit {
 
   constructor(public authService: AuthService, public router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.loginSubscription?.unsubscribe()
+  }
 
   loginUser() {
     this.loading = true
@@ -27,14 +31,14 @@ export class LoginComponent implements OnInit {
       email: this.loginForm.controls['email'].value!,
       password: this.loginForm.controls['password'].value!,
     }
-    this.authService.login(payload).subscribe({
+    this.loginSubscription = this.authService.login(payload).subscribe({
       next: (_) => {
         this.loading = false
         this.loginForm.reset()
         this.router.navigate(['/user-profile'])
       },
       error: (err) => {
-        this.errorResponse = err.message
+        this.errorMessage = err.message
         this.loading = false
       },
     })

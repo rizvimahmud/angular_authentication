@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core'
-import {Router} from '@angular/router'
-import {AuthService} from '../auth/services/auth.service'
-import {Roles} from '../auth/types/roles'
-import {User} from '../auth/types/user.interface'
+import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
+import { AuthService } from '../auth/services/auth.service'
+import { Roles } from '../auth/types/roles'
+import { User } from '../auth/types/user.interface'
 
 @Component({
   selector: 'navigation',
@@ -24,13 +24,8 @@ export class NavigationComponent implements OnInit {
   }
 
   ngDoCheck(): void {
-    const authUrls = ['/register', '/login']
-    const currentUrl = this.router.url
-    if (authUrls.includes(currentUrl)) {
-      this.displayNav = false
-    } else {
-      this.displayNav = true
-    }
+    this.showNav()
+    this.havePermission()
   }
 
   logOutUser() {
@@ -42,6 +37,16 @@ export class NavigationComponent implements OnInit {
     const currentRole = this.authService.getUserRole()
     if (currentRole === Roles.Admin || currentRole === Roles.Super) {
       this.displayDashboardRoute = true
+    }
+  }
+
+  showNav() {
+    const authUrls = ['/register', '/login']
+    const currentUrl = this.router.url
+    if (authUrls.includes(currentUrl)) {
+      this.displayNav = false
+    } else {
+      this.displayNav = true
     }
   }
 

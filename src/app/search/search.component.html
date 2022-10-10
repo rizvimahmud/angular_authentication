@@ -1,0 +1,24 @@
+<div class="flex">
+  <span class="p-input-icon-left ml-auto">
+    <i class="pi pi-search"></i>
+    <input
+      pInputText
+      type="text"
+      placeholder="Search keyword"
+      [(ngModel)]="name"
+      (ngModelChange)="onNameChange($event)"
+    />
+  </span>
+</div>
+
+<!-- 
+    <button
+    pButton
+    label="Clear"
+    class="p-button-outlined"
+    icon="pi pi-filter-slash"
+  ></button>
+
+    (click)="clear(dt1)"
+    (input)="dt1.filterGlobal($event.target.value, 'contains')"
+ -->

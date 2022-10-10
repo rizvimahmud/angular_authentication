@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core'
-import {RouterModule, Routes} from '@angular/router'
-import {AuthGuard} from './auth/guards/auth.guard'
-import {RoleGuard} from './auth/guards/role.guard'
-import {DashbaordComponent} from './dashbaord/dashbaord.component'
-import {UserProfileComponent} from './user-profile/user-profile.component'
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { AuthGuard } from './auth/guards/auth.guard'
+import { RoleGuard } from './auth/guards/role.guard'
+import { DashbaordComponent } from './dashbaord/dashboard.component'
+import { UserProfileComponent } from './user-profile/user-profile.component'
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: '/user-profile'},
+  { path: '', pathMatch: 'full', redirectTo: '/user-profile' },
   {
     path: 'dashboard',
     component: DashbaordComponent,

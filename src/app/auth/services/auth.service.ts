@@ -1,14 +1,7 @@
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {Router} from '@angular/router'
-import {
-  BehaviorSubject,
-  catchError,
-  map,
-  Observable,
-  tap,
-  throwError,
-} from 'rxjs'
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs'
 import {environment} from 'src/environments/environment'
 import {Cookies} from '../types/cookies'
 import {ErrorResponse} from '../types/errorResponse.interface'
@@ -19,8 +12,8 @@ import {UserSignupRequest} from '../types/userSignupRequest.interface'
 @Injectable()
 export class AuthService {
   authUrl = `${environment.baseUrl}/user`
-  private currentUserSubject: BehaviorSubject<User>
-  public currentUser$: Observable<User>
+  private currentUserSubject: BehaviorSubject<User | null>
+  public currentUser$: Observable<User | null>
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -29,7 +22,9 @@ export class AuthService {
   }
 
   constructor(private http: HttpClient, public router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(this.getToken('user'))
+    this.currentUserSubject = new BehaviorSubject<User | null>(
+      this.getUserFromLocalStorage('user')
+    )
     this.currentUser$ = this.currentUserSubject.asObservable()
   }
 
@@ -38,9 +33,9 @@ export class AuthService {
     return this.http.post(signupUrl, user).pipe(catchError(this.handleError))
   }
 
-  login(user: UserLoginRequest) {
+  login(user: UserLoginRequest): Observable<User> {
     let loginUrl = `${this.authUrl}/login`
-    return this.http.post(loginUrl, user, this.httpOptions).pipe(
+    return this.http.post<User>(loginUrl, user, this.httpOptions).pipe(
       tap((res: any) => {
         this.setUser(res.user)
       }),
@@ -60,13 +55,10 @@ export class AuthService {
       })
   }
 
-  getCurrentuser() {
-    return this.http.get(this.authUrl, this.httpOptions).pipe(
-      map((res) => {
-        return res || {}
-      }),
-      catchError(this.handleError)
-    )
+  getCurrentuser(): Observable<User> {
+    return this.http
+      .get<User>(this.authUrl, this.httpOptions)
+      .pipe(catchError(this.handleError))
   }
 
   refreshToken() {
@@ -83,7 +75,7 @@ export class AuthService {
     })
   }
 
-  getToken(key: string) {
+  getUserFromLocalStorage(key: string) {
     const token = localStorage.getItem(key)
     if (token) {
       return JSON.parse(token)
@@ -102,18 +94,18 @@ export class AuthService {
     localStorage.removeItem('user')
   }
 
-  setUser(user: any) {
+  setUser(user: User | null): void {
     localStorage.setItem('user', JSON.stringify(user))
     this.currentUserSubject.next(user)
   }
 
   get isLoggedIn(): Boolean {
-    const user = this.getToken('user')
+    const user = this.getUserFromLocalStorage('user')
     return user ? true : false
   }
 
   getUserRole() {
-    const user = this.getToken('user')
+    const user = this.getUserFromLocalStorage('user')
     if (user) {
       let role = user.role
       return role

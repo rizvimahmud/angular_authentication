@@ -13,6 +13,7 @@
       <ng-template pTemplate="caption">
         <div class="flex items-center justify-between">
           <span class="text-2xl">List of Users</span>
+          <!-- <search (nameChangeEvent)="onNameChange($event)"></search> -->
           <filter (selectUserEvent)="selectUser($event)"></filter>
         </div>
       </ng-template>
@@ -21,7 +22,7 @@
           <th *ngFor="let col of columns; let i = index">
             {{ col.header }}
           </th>
-          <th *ngIf="currentUser?.role === 'admin'"></th>
+          <th *ngIf="currentUserRole === 'admin'"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
@@ -51,7 +52,7 @@
               {{ user.isActive ? 'Approved' : 'Pending' }}
             </span>
           </td>
-          <td *ngIf="currentUser?.role === 'admin'">
+          <td *ngIf="currentUserRole === 'admin'">
             <button
               *ngIf="!user.isActive"
               pButton

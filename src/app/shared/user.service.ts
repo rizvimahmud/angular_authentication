@@ -1,6 +1,8 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http'
-import {Injectable} from '@angular/core'
-import {environment} from 'src/environments/environment'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
+import { UsersResponse } from './userResponse.interface'
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +25,8 @@ export class UserService {
     offset: number = this.defaultOffset,
     limit: number = this.defaultLimit,
     name: string = ''
-  ) {
-    return this.http.get(this.userUrl, {
+  ): Observable<UsersResponse> {
+    return this.http.get<UsersResponse>(this.userUrl, {
       params: new HttpParams()
         .set('offset', offset)
         .set('limit', limit)
@@ -35,7 +37,7 @@ export class UserService {
 
   deleteUser(userId: string) {
     const deleteUserUrl = `${this.userUrl}/${userId}`
-    return this.http.delete(deleteUserUrl, {headers: this.getHttpHeaders()})
+    return this.http.delete(deleteUserUrl, { headers: this.getHttpHeaders() })
   }
 
   handleUserVerification(userId: string, status: 'activate' | 'deactivate') {
@@ -43,8 +45,8 @@ export class UserService {
 
     return this.http.put(
       verificationUrl,
-      {status},
-      {headers: this.getHttpHeaders()}
+      { status },
+      { headers: this.getHttpHeaders() }
     )
   }
 
@@ -52,9 +54,9 @@ export class UserService {
     offset: number = this.defaultOffset,
     limit: number = this.defaultLimit,
     name = ''
-  ) {
+  ): Observable<UsersResponse> {
     const getRegularUsers = `${this.userUrl}/super`
-    return this.http.get(getRegularUsers, {
+    return this.http.get<UsersResponse>(getRegularUsers, {
       params: new HttpParams()
         .set('offset', offset)
         .set('limit', limit)

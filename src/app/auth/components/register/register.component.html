@@ -149,10 +149,10 @@
           ></p-fileUpload>
         </div>
         <div
-          *ngIf="errorResponse"
+          *ngIf="errorMessage"
           class="px-3 py-2 bg-red-400 text-sm text-gray-50 rounded-lg"
         >
-          <p>{{ errorResponse }}</p>
+          <p>{{ errorMessage }}</p>
         </div>
         <div class="mt-4">
           <button
