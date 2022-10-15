@@ -35,9 +35,11 @@ export class NavigationComponent implements OnInit {
 
   havePermission() {
     const currentRole = this.authService.getUserRole()
-    if (currentRole === Roles.Admin || currentRole === Roles.Super) {
-      this.displayDashboardRoute = true
+    if (currentRole === Roles.Regular) {
+      this.displayDashboardRoute = false
+      return
     }
+    this.displayDashboardRoute = true
   }
 
   showNav() {

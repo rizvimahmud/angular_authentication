@@ -21,7 +21,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers(
+  getUsers(
     offset: number = this.defaultOffset,
     limit: number = this.defaultLimit,
     name: string = ''
@@ -48,20 +48,5 @@ export class UserService {
       { status },
       { headers: this.getHttpHeaders() }
     )
-  }
-
-  getRegularUsers(
-    offset: number = this.defaultOffset,
-    limit: number = this.defaultLimit,
-    name = ''
-  ): Observable<UsersResponse> {
-    const getRegularUsers = `${this.userUrl}/super`
-    return this.http.get<UsersResponse>(getRegularUsers, {
-      params: new HttpParams()
-        .set('offset', offset)
-        .set('limit', limit)
-        .set('name', name),
-      headers: this.getHttpHeaders(),
-    })
   }
 }

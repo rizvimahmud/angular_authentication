@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
-import { debounce, debounceTime, distinctUntilChanged, Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs'
 
 @Component({
   selector: 'search',
@@ -9,7 +9,6 @@ import { debounce, debounceTime, distinctUntilChanged, Subject } from 'rxjs'
 export class SearchComponent implements OnInit {
   name = ''
   nameChanged = new Subject<string>()
-
   @Output() nameChangeEvent = new EventEmitter<string>()
 
   constructor() {

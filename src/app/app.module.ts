@@ -4,10 +4,15 @@ import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http'
 
+import { AuthModule } from './auth/auth.module'
 import { AppRoutingModule } from './app-routing.module'
+
 import { AppComponent } from './app.component'
 import { UserProfileComponent } from './user-profile/user-profile.component'
 import { FilterComponent } from './filter/filter.component'
+import { SearchComponent } from './search/search.component'
+import { DashbaordComponent } from './dashbaord/dashboard.component'
+import { NavigationComponent } from './navigation/navigation.component'
 
 import { ClickOutsideDirective } from './shared/click-outside.directive'
 
@@ -16,10 +21,6 @@ import { InputTextModule } from 'primeng/inputtext'
 import { TableModule } from 'primeng/table'
 import { DropdownModule } from 'primeng/dropdown'
 import { AvatarModule } from 'primeng/avatar'
-import { NavigationComponent } from './navigation/navigation.component'
-import { AuthModule } from './auth/auth.module'
-import { SearchComponent } from './search/search.component'
-import { DashbaordComponent } from './dashbaord/dashboard.component'
 
 @NgModule({
   declarations: [

@@ -1,13 +1,17 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http'
-import {Injectable} from '@angular/core'
-import {Router} from '@angular/router'
-import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs'
-import {environment} from 'src/environments/environment'
-import {Cookies} from '../types/cookies'
-import {ErrorResponse} from '../types/errorResponse.interface'
-import {User} from '../types/user.interface'
-import {UserLoginRequest} from '../types/userLoginRequest.interface'
-import {UserSignupRequest} from '../types/userSignupRequest.interface'
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { Router } from '@angular/router'
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs'
+import { environment } from 'src/environments/environment'
+import { Cookies } from '../types/cookies'
+import { ErrorResponse } from '../types/errorResponse.interface'
+import { User } from '../types/user.interface'
+import { UserLoginRequest } from '../types/userLoginRequest.interface'
+import { UserSignupRequest } from '../types/userSignupRequest.interface'
 
 @Injectable()
 export class AuthService {
@@ -49,7 +53,7 @@ export class AuthService {
       .get(logoutUrl, this.httpOptions)
       .pipe(catchError(this.handleError))
       .subscribe(() => {
-        this.clearTokens()
+        this.clearUserFromLocalStorage()
         this.currentUserSubject.next(null!)
         this.router.navigateByUrl('/login')
       })
@@ -90,7 +94,7 @@ export class AuthService {
     }
   }
 
-  clearTokens() {
+  clearUserFromLocalStorage() {
     localStorage.removeItem('user')
   }
 
@@ -106,10 +110,7 @@ export class AuthService {
 
   getUserRole() {
     const user = this.getUserFromLocalStorage('user')
-    if (user) {
-      let role = user.role
-      return role
-    }
+    if (user) return user.role
     return ''
   }
 

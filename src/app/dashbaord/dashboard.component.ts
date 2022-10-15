@@ -3,7 +3,6 @@ import { LazyLoadEvent } from 'primeng/api'
 import { Table } from 'primeng/table'
 import { Subject, takeUntil } from 'rxjs'
 import { AuthService } from '../auth/services/auth.service'
-import { Roles } from '../auth/types/roles'
 import { User } from '../auth/types/user.interface'
 import { UserService } from '../shared/user.service'
 
@@ -75,27 +74,8 @@ export class DashbaordComponent implements OnInit, OnDestroy {
     limit = this.defaultLimit,
     name?: string
   ) {
-    if (this.authService.getUserRole() === Roles.Admin) {
-      this.getAllUsers(offset, limit, name)
-    } else {
-      this.getRegularUsers(offset, limit, name)
-    }
-  }
-
-  getRegularUsers(offset?: number, limit?: number, name?: string) {
     this.userService
-      .getRegularUsers(offset, limit, name)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((res) => {
-        this.users = res.users
-        this.totalRecords = res.totalRecords
-        this.isLoading = false
-      })
-  }
-
-  getAllUsers(offset?: number, limit?: number, name?: string) {
-    this.userService
-      .getAllUsers(offset, limit, name)
+      .getUsers(offset, limit, name)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((res) => {
         this.users = res.users

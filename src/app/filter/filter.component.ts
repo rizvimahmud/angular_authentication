@@ -1,7 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Output } from '@angular/core'
 import { Observable } from 'rxjs'
-import { AuthService } from '../auth/services/auth.service'
-import { Roles } from '../auth/types/roles'
 import { User } from '../auth/types/user.interface'
 import { UserService } from '../shared/user.service'
 import { UsersResponse } from '../shared/userResponse.interface'
@@ -18,10 +16,7 @@ export class FilterComponent {
   @Output()
   selectUserEvent = new EventEmitter<string>()
 
-  constructor(
-    private userService: UserService,
-    private authService: AuthService
-  ) {
+  constructor(private userService: UserService) {
     this.userResponse$ = this.getUsers()
   }
 
@@ -30,8 +25,6 @@ export class FilterComponent {
   }
 
   getUsers(): Observable<UsersResponse> {
-    return this.authService.getUserRole() === Roles.Admin
-      ? this.userService.getAllUsers()
-      : this.userService.getRegularUsers()
+    return this.userService.getUsers()
   }
 }

@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { AuthService } from '../../services/auth.service'
-import { UserSignupRequest } from '../../types/userSignupRequest.interface'
 import { capitalizeUserName } from '../../utils/capitalizeUserName'
 import { CustomValidators } from '../../utils/customValidator'
 
@@ -50,12 +49,6 @@ export class RegisterComponent implements OnDestroy {
       avatar: file,
     })
     this.registerForm.get('avatar')?.updateValueAndValidity()
-
-    // const reader = new FileReader()
-    // reader.onload = () => {
-    //   this.previewImage = reader.result as string
-    // }
-    // reader.readAsDataURL(file)
   }
 
   registerUser() {
@@ -83,8 +76,8 @@ export class RegisterComponent implements OnDestroy {
         },
       })
   }
-  cancelAvatarUpload() {
-    this.registerForm.controls['avatar'].reset()
-    this.previewImage = ''
-  }
+  // cancelAvatarUpload() {
+  //   this.registerForm.controls['avatar'].reset()
+  //   this.previewImage = ''
+  // }
 }
